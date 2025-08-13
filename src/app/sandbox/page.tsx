@@ -131,7 +131,7 @@ export default function SandboxPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
-        <div className="text-lg font-semibold tracking-tight">Sandbox</div>
+        <h1 className="text-lg font-semibold tracking-tight">Sandbox</h1>
         <nav className="flex items-center gap-3 text-sm">
           <Link className="hover:underline" href="/">Home</Link>
           <Link className="hover:underline" href="/templates">Templates</Link>

@@ -1,0 +1,31 @@
+export const metadata = {
+  title: "POML Cheatsheet — Core tags and patterns",
+  description: "Quick reference for POML tags like <role>, <task>, <example>, <document>, <table>, <img>, <stylesheet>.",
+  alternates: { canonical: "https://poml.cloud/docs/cheatsheet" },
+};
+
+# POML Cheatsheet
+
+## Core tags
+
+- `<role>`: Define the assistant persona.
+- `<task>`: Describe the goal or instruction.
+- `<example>`: Provide few-shot examples.
+- `<document>` / `<table>` / `<img>`: Reference external inputs.
+- `<stylesheet>`: Control presentation separately from content.
+- `<let>` / `if` / `for`: Templating helpers.
+
+## Minimal example
+
+```xml
+<poml>
+  <role>You are a helpful assistant.</role>
+  <task>Summarize the document into 3 bullets.</task>
+  <document src="summary.txt" />
+  <output-format>- Bullet 1\n- Bullet 2\n- Bullet 3</output-format>
+</poml>
+```
+
+Official docs: https://microsoft.github.io/poml/latest/
+
+

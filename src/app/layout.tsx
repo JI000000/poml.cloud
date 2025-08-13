@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     url: "https://poml.cloud",
     siteName: "POML Cloud",
   },
+  alternates: { canonical: "https://poml.cloud/" },
 };
 
 export default function RootLayout({

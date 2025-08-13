@@ -1,10 +1,19 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "POML Cloud — Learn, preview, and share POML",
+  description: "A modern, zero-install POML sandbox and template hub.",
+  alternates: { canonical: "https://poml.cloud/" },
+  openGraph: { title: "POML Cloud", description: "Learn, preview, and share POML in your browser.", url: "https://poml.cloud", siteName: "POML Cloud" },
+  twitter: { card: "summary" },
+};
 
 export default function Home() {
   return (
     <div className="min-h-screen text-foreground bg-background">
       <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
-        <div className="text-lg font-semibold tracking-tight">POML Cloud</div>
+        <h1 className="text-lg font-semibold tracking-tight">POML Cloud</h1>
         <nav className="flex items-center gap-4 text-sm">
           <Link className="hover:underline" href="/docs/quickstart">Docs</Link>
           <Link className="hover:underline" href="/templates">Templates</Link>
@@ -13,7 +22,7 @@ export default function Home() {
       </header>
       <main className="px-6 md:px-10 py-10">
         <section className="max-w-3xl">
-          <h1 className="text-3xl md:text-5xl font-semibold leading-tight">Prompt Orchestration Markup Language</h1>
+          <h2 className="text-3xl md:text-5xl font-semibold leading-tight">Prompt Orchestration Markup Language</h2>
           <p className="mt-4 text-balance text-base md:text-lg text-black/70 dark:text-white/70">
             Learn, preview, and share POML in your browser. Zero setup. Zero cost.
           </p>

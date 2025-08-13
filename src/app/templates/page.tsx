@@ -1,44 +1,32 @@
 import Link from "next/link";
+import { templates } from "@/templates/data";
+import type { Metadata } from "next";
 
-type TemplateMeta = {
-  slug: string;
-  title: string;
-  summary: string;
-  tags: string[];
+export const metadata: Metadata = {
+  title: "POML Templates — Ready-to-use prompts for developers",
+  description: "Browse ready-to-use POML templates across industries and tasks. Open any template in the Sandbox.",
+  alternates: { canonical: "https://poml.cloud/templates" },
+  openGraph: {
+    title: "POML Templates",
+    description: "Ready-to-use POML templates you can open in the Sandbox.",
+    url: "https://poml.cloud/templates",
+    siteName: "POML Cloud",
+  },
+  twitter: { card: "summary" },
 };
-
-const templates: TemplateMeta[] = [
-  {
-    slug: "customer-support-summary",
-    title: "Customer Support Summary",
-    summary: "Summarize a support ticket thread with key actions and sentiment.",
-    tags: ["support", "summary"],
-  },
-  {
-    slug: "image-assisted-explanation",
-    title: "Image-assisted Explanation",
-    summary: "Explain a concept using a reference image with constraints.",
-    tags: ["education", "vision"],
-  },
-  {
-    slug: "report-structuring",
-    title: "Report Structuring",
-    summary: "Transform raw notes into a structured report with headings and bullets.",
-    tags: ["report", "formatting"],
-  },
-];
 
 export default function TemplatesPage() {
   return (
     <div className="min-h-screen">
-      <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
-        <div className="text-lg font-semibold tracking-tight">Templates</div>
+      <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between" role="banner">
+        <h1 className="text-lg font-semibold tracking-tight">POML Templates</h1>
         <nav className="flex items-center gap-3 text-sm">
           <Link className="hover:underline" href="/">Home</Link>
           <Link className="hover:underline" href="/sandbox">Sandbox</Link>
         </nav>
       </header>
-      <main className="px-6 md:px-10 py-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <main className="px-6 md:px-10 py-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="main">
+        <h2 className="sr-only">All templates</h2>
         {templates.map((t) => (
           <Link key={t.slug} href={`/templates/${t.slug}`} className="block rounded-lg border border-black/10 dark:border-white/15 p-4 hover:bg-black/5 dark:hover:bg-white/5">
             <h3 className="font-medium">{t.title}</h3>

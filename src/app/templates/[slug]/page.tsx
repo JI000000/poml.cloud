@@ -1,73 +1,26 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-type TemplateData = {
-  title: string;
-  poml: string;
-  summary: string;
-};
-
-const DB: Record<string, TemplateData> = {
-  "customer-support-summary": {
-    title: "Customer Support Summary",
-    summary: "Summarize a support ticket thread with key actions and sentiment.",
-    poml: `<poml>
-  <role>You are an expert support assistant.</role>
-  <task>Summarize the following ticket thread. Provide actions, blockers, and sentiment.</task>
-  <document src="ticket.txt" />
-  <output-format>
-    - Title
-    - TL;DR (2-3 bullets)
-    - Actions (who/what/when)
-    - Risks/Blockers
-    - Sentiment (brief)
-  </output-format>
-</poml>`,
-  },
-  "image-assisted-explanation": {
-    title: "Image-assisted Explanation",
-    summary: "Explain a concept using a reference image with constraints.",
-    poml: `<poml>
-  <role>You are a patient teacher.</role>
-  <task>Explain photosynthesis using the reference image.</task>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Photosynthesis_equation.svg" alt="Diagram" />
-  <output-format>Under 80 words; friendly, precise.</output-format>
-</poml>`,
-  },
-  "report-structuring": {
-    title: "Report Structuring",
-    summary: "Transform raw notes into a structured report with headings and bullets.",
-    poml: `<poml>
-  <role>You are a technical writer.</role>
-  <task>Turn the notes into a structured report.</task>
-  <document src="notes.txt" />
-  <stylesheet>
-    h2 { style: "## {text}" }
-    li { style: "- {text}" }
-  </stylesheet>
-  <output-format>
-    Include Introduction, Findings, Recommendations.
-  </output-format>
-</poml>`,
-  },
-};
+import { templates } from "@/templates/data";
+import type { Metadata } from "next";
+import SeoJsonLd from "@/components/SeoJsonLd";
 
 export default async function TemplateDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data = DB[slug];
+  const data = templates.find((t) => t.slug === slug);
   if (!data) return notFound();
   const encoded = Buffer.from(data.poml, "utf-8").toString("base64");
   return (
     <div className="min-h-screen">
-      <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
-        <div className="text-lg font-semibold tracking-tight">{data.title}</div>
+      <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between" role="banner">
+        <h1 className="text-lg font-semibold tracking-tight">{data.title}</h1>
         <nav className="flex items-center gap-3 text-sm">
           <Link className="hover:underline" href="/">Home</Link>
           <Link className="hover:underline" href="/templates">Templates</Link>
           <Link className="hover:underline" href={`/sandbox#${encoded}`}>Open in Sandbox</Link>
         </nav>
       </header>
-      <main className="px-6 md:px-10 py-8 max-w-3xl">
+      <main className="px-6 md:px-10 py-8 max-w-3xl" role="main">
+        <h2 className="sr-only">Template summary and code</h2>
         <p className="text-sm opacity-80">{data.summary}</p>
         <pre className="mt-4 text-sm rounded-lg border border-black/10 dark:border-white/15 p-4 overflow-auto">
 {data.poml}
@@ -83,9 +36,35 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
             <a className="underline" href="https://github.com/microsoft/poml" target="_blank">GitHub</a>
           </p>
         </div>
+        <SeoJsonLd json={{
+          "@context":"https://schema.org",
+          "@type":"SoftwareApplication",
+          "name": data.title,
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web",
+          "description": data.summary,
+          "url": `https://poml.cloud/templates/${slug}`,
+          "offers": {"@type":"Offer","price":"0","priceCurrency":"USD"}
+        }} />
       </main>
     </div>
   );
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const data = templates.find((t) => t.slug === slug);
+  if (!data) return {};
+  const title = `${data.title} — POML Template`;
+  const description = data.summary;
+  const url = `https://poml.cloud/templates/${slug}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url, siteName: "POML Cloud" },
+    twitter: { card: "summary" },
+  };
 }
 
 
