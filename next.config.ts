@@ -1,9 +1,15 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+});
 
 const nextConfig: NextConfig = {
   experimental: {
     mdxRs: true,
   },
+  pageExtensions: ["ts", "tsx", "js", "jsx", "mdx"],
   webpack: (config) => {
     // Avoid bundling server-only pdf/canvas deps from pomljs in the client build
     config.resolve.alias = {
@@ -16,4 +22,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);

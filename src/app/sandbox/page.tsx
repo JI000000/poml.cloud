@@ -128,6 +128,15 @@ export default function SandboxPage() {
     }
   };
 
+  const [ollamaDetected, setOllamaDetected] = useState<boolean | null>(null);
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetch("http://localhost:11434/api/tags", { signal: ctrl.signal })
+      .then((r) => setOllamaDetected(r.ok))
+      .catch(() => setOllamaDetected(false));
+    return () => ctrl.abort();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
@@ -153,6 +162,17 @@ export default function SandboxPage() {
         <section className="p-4">
           <h2 className="font-medium mb-2">Preview</h2>
           <div className="rounded-lg border border-black/10 dark:border-white/15 p-4 bg-white text-black overflow-auto" dangerouslySetInnerHTML={{ __html: previewHtml }} />
+          <div className="mt-4 text-xs opacity-80">
+            {ollamaDetected === null && "Detecting local runtime..."}
+            {ollamaDetected === false && (
+              <span>
+                Local mode not detected. Install Ollama: brew install ollama → ollama serve → ollama pull llama3.1
+              </span>
+            )}
+            {ollamaDetected === true && (
+              <span>Local mode available (Ollama detected at localhost:11434).</span>
+            )}
+          </div>
         </section>
       </main>
     </div>

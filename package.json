@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.4.6",
     "dompurify": "^3.2.6",
     "gray-matter": "^4.0.3",
     "minisearch": "^7.1.2",

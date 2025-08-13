@@ -4,6 +4,7 @@ import { templates } from "@/templates/data";
 import type { Metadata } from "next";
 import SeoJsonLd from "@/components/SeoJsonLd";
 import RelatedTemplates from "@/components/RelatedTemplates";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default async function TemplateDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -21,11 +22,27 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
         </nav>
       </header>
       <main className="px-6 md:px-10 py-8 max-w-3xl" role="main">
+        <Breadcrumbs items={[{href:"/templates",label:"Templates"},{label:data.title}]} />
         <h2 className="sr-only">Template summary and code</h2>
         <p className="text-sm opacity-80">{data.summary}</p>
         <pre className="mt-4 text-sm rounded-lg border border-black/10 dark:border-white/15 p-4 overflow-auto">
 {data.poml}
         </pre>
+        <section className="mt-6">
+          <h3 className="font-medium">How to use</h3>
+          <ol className="list-decimal pl-6 mt-2 text-sm space-y-1">
+            <li>Click “Open in Sandbox” to load this template.</li>
+            <li>Adjust the {`<task>`} and {`<stylesheet>`} to your needs.</li>
+            <li>Paste or reference your files via {`<document>`}/{`<table>`}/{`<img>`}.</li>
+          </ol>
+        </section>
+        <section className="mt-6">
+          <h3 className="font-medium">FAQ</h3>
+          <ul className="list-disc pl-6 mt-2 text-sm space-y-1">
+            <li>Why no output here? This page shows the POML. Use the Sandbox to preview.</li>
+            <li>Need to run locally without paid API? Use the upcoming “Local mode (Ollama)”.</li>
+          </ul>
+        </section>
         <div className="mt-4">
           <Link className="inline-flex items-center rounded-md px-3 py-1.5 bg-foreground text-background text-sm" href={`/sandbox#${encoded}`}>Open in Sandbox</Link>
         </div>
@@ -47,6 +64,16 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
           "description": data.summary,
           "url": `https://poml.cloud/templates/${slug}`,
           "offers": {"@type":"Offer","price":"0","priceCurrency":"USD"}
+        }} />
+        <SeoJsonLd json={{
+          "@context":"https://schema.org",
+          "@type":"HowTo",
+          "name": `${data.title} — How to use`,
+          "step": [
+            {"@type":"HowToStep","text":"Open in Sandbox"},
+            {"@type":"HowToStep","text":"Adjust <task> and <stylesheet>"},
+            {"@type":"HowToStep","text":"Reference your files via <document>/<table>/<img>"}
+          ]
         }} />
       </main>
     </div>
