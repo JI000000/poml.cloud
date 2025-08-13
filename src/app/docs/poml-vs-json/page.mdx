@@ -1,0 +1,21 @@
+export const metadata = {
+  title: "POML vs JSON prompts — When and how to migrate",
+  description: "Compare POML with JSON/template prompts and learn a practical migration path.",
+  alternates: { canonical: "https://poml.cloud/docs/poml-vs-json" },
+};
+
+# POML vs JSON prompts
+
+## TL;DR
+- POML gives semantic tags, data embedding, and decoupled styling.
+- JSON/templates are flexible but mix content with presentation.
+
+## Migration tips
+1. Identify repeated prompt parts → map to `<role>`, `<task>`, `<example>`.
+2. External inputs → `<document>`, `<table>`, `<img>`.
+3. Move formatting into `<stylesheet>`.
+4. Keep a baseline output to compare during migration.
+
+Official docs: https://microsoft.github.io/poml/latest/
+
+

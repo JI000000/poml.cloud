@@ -25,8 +25,10 @@ export default function TemplatesPage() {
           <Link className="hover:underline" href="/sandbox">Sandbox</Link>
         </nav>
       </header>
-      <main className="px-6 md:px-10 py-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="main">
+      <main className="px-6 md:px-10 py-8" role="main">
         <h2 className="sr-only">All templates</h2>
+        <div className="mb-6 text-sm opacity-80">Browse by tag:</div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {templates.map((t) => (
           <Link key={t.slug} href={`/templates/${t.slug}`} className="block rounded-lg border border-black/10 dark:border-white/15 p-4 hover:bg-black/5 dark:hover:bg-white/5">
             <h3 className="font-medium">{t.title}</h3>
@@ -38,6 +40,7 @@ export default function TemplatesPage() {
             </div>
           </Link>
         ))}
+        </div>
       </main>
     </div>
   );

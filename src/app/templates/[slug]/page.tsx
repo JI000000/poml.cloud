@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { templates } from "@/templates/data";
 import type { Metadata } from "next";
 import SeoJsonLd from "@/components/SeoJsonLd";
+import RelatedTemplates from "@/components/RelatedTemplates";
 
 export default async function TemplateDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -36,6 +37,7 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
             <a className="underline" href="https://github.com/microsoft/poml" target="_blank">GitHub</a>
           </p>
         </div>
+        <RelatedTemplates currentSlug={slug} tags={data.tags} />
         <SeoJsonLd json={{
           "@context":"https://schema.org",
           "@type":"SoftwareApplication",

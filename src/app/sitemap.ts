@@ -11,6 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/docs/quickstart`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/docs/cheatsheet`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${base}/docs/styles`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/docs/poml-vs-json`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${base}/docs/data-embedding`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   ]
   const templateEntries: MetadataRoute.Sitemap = allSlugs.map((slug) => ({
     url: `${base}/templates/${slug}`,
