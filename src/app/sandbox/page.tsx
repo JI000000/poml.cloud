@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+// removed page-local nav; global layout handles header/footer
 
 function decodeState(hash: string): string | null {
   try {
@@ -129,27 +129,41 @@ export default function SandboxPage() {
   };
 
   const [ollamaDetected, setOllamaDetected] = useState<boolean | null>(null);
+  const [running, setRunning] = useState(false);
+  const [runOutput, setRunOutput] = useState<string>("");
+  const enableLocal = process.env.NEXT_PUBLIC_ENABLE_LOCAL === '1';
   useEffect(() => {
-    const ctrl = new AbortController();
-    fetch("http://localhost:11434/api/tags", { signal: ctrl.signal })
-      .then((r) => setOllamaDetected(r.ok))
-      .catch(() => setOllamaDetected(false));
-    return () => ctrl.abort();
-  }, []);
+    if (!enableLocal) { setOllamaDetected(false); return; }
+    let canceled = false;
+    fetch("/api/ollama/health")
+      .then((r) => r.json())
+      .then((data) => { if (!canceled) setOllamaDetected(!!data?.ok); })
+      .catch(() => { if (!canceled) setOllamaDetected(false); });
+    return () => { canceled = true; };
+  }, [enableLocal]);
+
+  const runLocal = async (): Promise<void> => {
+    if (!ollamaDetected || running) return;
+    setRunning(true);
+    setRunOutput("");
+    try {
+      const r = await fetch("/api/run", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ poml: pomlText }) });
+      const data = await r.json();
+      if (data?.ok) setRunOutput(data.output ?? ""); else setRunOutput(data?.error ?? "Run failed");
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Run failed";
+      setRunOutput(msg);
+    } finally {
+      setRunning(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
-        <h1 className="text-lg font-semibold tracking-tight">Sandbox</h1>
-        <nav className="flex items-center gap-3 text-sm">
-          <Link className="hover:underline" href="/">Home</Link>
-          <Link className="hover:underline" href="/templates">Templates</Link>
-        </nav>
-      </header>
       <main className="flex-1 grid grid-rows-[auto_1fr] md:grid-cols-2 gap-0">
         <section className="p-4 border-b md:border-b-0 md:border-r border-black/10 dark:border-white/10 min-h-[40vh]">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="font-medium">Editor (.poml)</h2>
+            <h1 className="font-medium">Editor (.poml)</h1>
             <div className="flex items-center gap-2">
               <button onClick={updateUrl} className="text-xs rounded-md px-2 py-1 border border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5">Share URL</button>
             </div>
@@ -162,17 +176,25 @@ export default function SandboxPage() {
         <section className="p-4">
           <h2 className="font-medium mb-2">Preview</h2>
           <div className="rounded-lg border border-black/10 dark:border-white/15 p-4 bg-white text-black overflow-auto" dangerouslySetInnerHTML={{ __html: previewHtml }} />
-          <div className="mt-4 text-xs opacity-80">
-            {ollamaDetected === null && "Detecting local runtime..."}
-            {ollamaDetected === false && (
-              <span>
-                Local mode not detected. Install Ollama: brew install ollama → ollama serve → ollama pull llama3.1
-              </span>
-            )}
-            {ollamaDetected === true && (
-              <span>Local mode available (Ollama detected at localhost:11434).</span>
-            )}
+          {enableLocal && (
+            <div className="mt-4 text-xs opacity-80">
+              {ollamaDetected === null && "Detecting local runtime..."}
+              {ollamaDetected === false && (
+                <span>
+                  Local mode not detected. Install Ollama: brew install ollama → ollama serve → ollama pull llama3.1
+                </span>
+              )}
+              {ollamaDetected === true && (
+                <span>Local mode available (Ollama detected at localhost:11434).</span>
+              )}
+            </div>
+          )}
+          <div className="mt-3">
+            <button disabled={!enableLocal || !ollamaDetected || running} onClick={runLocal} className={`text-sm rounded-md px-3 py-2 border ${(enableLocal && ollamaDetected) ? "border-black/10 dark:border-white/15 hover:bg-black/5 dark:hover:bg-white/5" : "opacity-60 cursor-not-allowed border-black/10"}`}>{running?"Running...":"Run (Local)"}</button>
           </div>
+          {runOutput && (
+            <div className="mt-3 text-sm rounded-lg border border-black/10 dark:border-white/15 p-3 whitespace-pre-wrap">{runOutput}</div>
+          )}
         </section>
       </main>
     </div>

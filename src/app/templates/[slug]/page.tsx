@@ -13,16 +13,9 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
   const encoded = Buffer.from(data.poml, "utf-8").toString("base64");
   return (
     <div className="min-h-screen">
-      <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between" role="banner">
-        <h1 className="text-lg font-semibold tracking-tight">{data.title}</h1>
-        <nav className="flex items-center gap-3 text-sm">
-          <Link className="hover:underline" href="/">Home</Link>
-          <Link className="hover:underline" href="/templates">Templates</Link>
-          <Link className="hover:underline" href={`/sandbox#${encoded}`}>Open in Sandbox</Link>
-        </nav>
-      </header>
       <main className="px-6 md:px-10 py-8 max-w-3xl" role="main">
         <Breadcrumbs items={[{href:"/templates",label:"Templates"},{label:data.title}]} />
+        <h1 className="text-xl font-semibold tracking-tight mb-2">{data.title}</h1>
         <h2 className="sr-only">Template summary and code</h2>
         <p className="text-sm opacity-80">{data.summary}</p>
         <pre className="mt-4 text-sm rounded-lg border border-black/10 dark:border-white/15 p-4 overflow-auto">
@@ -37,6 +30,15 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
           </ol>
         </section>
         <section className="mt-6">
+          <h3 className="font-medium">Sample I/O</h3>
+          <div className="text-sm mt-2">
+            <strong>Input</strong>
+            <pre className="mt-1 rounded-md border border-black/10 dark:border-white/15 p-3 overflow-auto">{templates.find(t=>t.slug===slug)?.sampleInput ?? `files -> (fill in your own)`}</pre>
+            <strong className="mt-3 block">Expected output format</strong>
+            <pre className="mt-1 rounded-md border border-black/10 dark:border-white/15 p-3 overflow-auto">{templates.find(t=>t.slug===slug)?.sampleOutputFormat ?? `Follow the Output format section in the POML.`}</pre>
+          </div>
+        </section>
+        <section className="mt-6">
           <h3 className="font-medium">FAQ</h3>
           <ul className="list-disc pl-6 mt-2 text-sm space-y-1">
             <li>Why no output here? This page shows the POML. Use the Sandbox to preview.</li>
@@ -45,14 +47,6 @@ export default async function TemplateDetail({ params }: { params: Promise<{ slu
         </section>
         <div className="mt-4">
           <Link className="inline-flex items-center rounded-md px-3 py-1.5 bg-foreground text-background text-sm" href={`/sandbox#${encoded}`}>Open in Sandbox</Link>
-        </div>
-        <div className="mt-8 text-sm opacity-70">
-          <p>Not affiliated with Microsoft. See the official POML docs for the full spec.</p>
-          <p>
-            <a className="underline" href="https://microsoft.github.io/poml/latest/" target="_blank">Official Docs</a>
-            <span className="ml-3" />
-            <a className="underline" href="https://github.com/microsoft/poml" target="_blank">GitHub</a>
-          </p>
         </div>
         <RelatedTemplates currentSlug={slug} tags={data.tags} />
         <SeoJsonLd json={{

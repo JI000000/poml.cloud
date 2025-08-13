@@ -17,7 +17,7 @@ export default function Home() {
       <main className="px-6 md:px-10 py-10">
         <section className="max-w-3xl">
           <h2 className="text-3xl md:text-5xl font-semibold leading-tight">Prompt Orchestration Markup Language</h2>
-          <p className="mt-4 text-balance text-base md:text-lg text-black/70 dark:text-white/70">
+          <p className="mt-3 text-balance text-[15px] md:text-[17px] leading-7 text-black/70 dark:text-white/70">
             Learn, preview, and share POML in your browser. Zero setup. Zero cost.
           </p>
           <div className="mt-6 flex gap-3">
@@ -26,16 +26,34 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-12 grid md:grid-cols-3 gap-6">
-          <div className="rounded-lg border border-black/10 dark:border-white/15 p-4">
+        <section className="mt-10">
+          <h3 className="font-medium">Featured templates</h3>
+          <div className="mt-3 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link href="/templates/blog-outline-generator" className="block rounded-lg border border-black/10 dark:border-white/15 p-3 hover:bg-black/5 dark:hover:bg-white/5">
+              <div className="font-medium text-sm">Blog Outline Generator</div>
+              <div className="text-xs opacity-80 mt-1">SEO-friendly outline with H2/H3 and keywords</div>
+            </Link>
+            <Link href="/templates/table-to-report" className="block rounded-lg border border-black/10 dark:border-white/15 p-3 hover:bg-black/5 dark:hover:bg-white/5">
+              <div className="font-medium text-sm">Table → Executive Report</div>
+              <div className="text-xs opacity-80 mt-1">Turn CSV into an exec summary</div>
+            </Link>
+            <Link href="/templates/customer-support-summary" className="block rounded-lg border border-black/10 dark:border-white/15 p-3 hover:bg-black/5 dark:hover:bg-white/5">
+              <div className="font-medium text-sm">Customer Support Summary</div>
+              <div className="text-xs opacity-80 mt-1">Summarize threads with actions</div>
+            </Link>
+          </div>
+        </section>
+
+        <section className="mt-10 grid md:grid-cols-3 gap-4 md:gap-6">
+          <div className="rounded-lg border border-black/10 dark:border-white/15 p-3 md:p-4">
             <h3 className="font-medium">Structured prompting</h3>
             <p className="text-sm mt-2 opacity-80">HTML-like semantic tags (&lt;role&gt;, &lt;task&gt;, &lt;example&gt;) improve readability and reuse.</p>
           </div>
-          <div className="rounded-lg border border-black/10 dark:border-white/15 p-4">
+          <div className="rounded-lg border border-black/10 dark:border-white/15 p-3 md:p-4">
             <h3 className="font-medium">Data & styling</h3>
             <p className="text-sm mt-2 opacity-80">Embed documents, tables, and images, and decouple presentation via stylesheets.</p>
           </div>
-          <div className="rounded-lg border border-black/10 dark:border-white/15 p-4">
+          <div className="rounded-lg border border-black/10 dark:border-white/15 p-3 md:p-4">
             <h3 className="font-medium">Zero-install sandbox</h3>
             <p className="text-sm mt-2 opacity-80">Validate and preview POML locally in your browser. No API keys required.</p>
           </div>
