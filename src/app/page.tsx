@@ -15,7 +15,7 @@ export default function Home() {
       <header className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
         <h1 className="text-lg font-semibold tracking-tight">POML Cloud</h1>
         <nav className="flex items-center gap-4 text-sm">
-          <Link className="hover:underline" href="/docs/quickstart">Docs</Link>
+          <Link className="hover:underline" href="/docs">Docs</Link>
           <Link className="hover:underline" href="/templates">Templates</Link>
           <Link className="hover:underline" href="/sandbox">Sandbox</Link>
         </nav>
